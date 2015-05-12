@@ -25,22 +25,28 @@ var getDroneTasks = function() {
 	});
 };
 
+var progress = function(dt, i) {
+	$('#td_' + dt.taskNumber).html('Complete');
+	$('#tr_' + dt.taskNumber).css('background-color', '#dff0d8');
+	$('#tr_' + dt.taskNumber).css('color', '#3c763d');
+	$('#progress-bar').css('width', ((i * 100) / (droneTasks.length - 1)) + '%');
+	$('#progress-bar').html(Math.round(((i * 100) / (droneTasks.length - 1)), 0) + '%');
+
+};
+
 var completeTask = function(i) {
 	$.ajax({
 		url : '/complete?taskID=' + droneTasks[i].ID + '&sessionID=' + sessionID,
 		success : function(data) {
-			$('#td_' + droneTasks[i].taskNumber).html('Complete');
-			$('#tr_' + droneTasks[i].taskNumber).css('background-color', '#dff0d8');
-			$('#tr_' + droneTasks[i].taskNumber).css('color', '#3c763d');
-			$('#progress-bar').css('width', ((i * 100) / droneTasks.length) + '%');
-			$('#progress-bar').html(Math.round(((i * 100) / droneTasks.length), 0) + '%');
-			if (droneTasks[i].taskNumber % 5 == 0) {
+			var dt = droneTasks[i];
+			progress(dt, i);
+			if (dt.taskNumber % 5 == 0) {
 				$('html, body').animate({
-					scrollTop : $('#tr_' + droneTasks[i].taskNumber).offset().top - 100
+					scrollTop : $('#tr_' + dt.taskNumber).offset().top - 100
 				}, 2000);
 			}
 			setTimeout(function() {
-				if (i < droneTasks.length - 2) {
+				if (i < droneTasks.length - 84) {
 					setTimeout(function() {
 						completeTask(i + 1);
 					}, taskCompleteDelay);
@@ -56,12 +62,30 @@ var completeTask = function(i) {
 	});
 };
 
+var countdown = function(i) {
+	if (i >= 0) {
+		setTimeout(function() {
+			$('#countdown').html(i);
+			countdown(i - 1);
+		}, 1000);
+	}
+};
+
 var poll = function(task) {
 	$.ajax({
 		url : '/poll?taskID=' + task.ID + '&sessionID=' + sessionID,
 		success : function(data) {
 			if (data == 'CPL') {
-				console.log('launch drone');
+				progress(task, droneTasks.length - 1);
+				$('#myModal').modal('show')
+				$('#countdown').html(5);
+				countdown(4);
+				$.ajax({
+					url : '/launch',
+					async : false,
+					success : function(data) {
+					}
+				});
 			} else {
 				setTimeout(function() {
 					poll(task);
