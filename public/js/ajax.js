@@ -36,7 +36,7 @@ var completeTask = function(i) {
 			$('#progress-bar').html(Math.round(((i * 100) / droneTasks.length), 0) + '%');
 			if (droneTasks[i].taskNumber != 0 && droneTasks[i].taskNumber % 5 == 0) {
 				$('html, body').animate({
-					scrollTop : $('#tr_' + droneTasks[i].taskNumber).offset().top + 100
+					scrollTop : $('#tr_' + droneTasks[i].taskNumber).offset().top + 90
 				}, 2000);
 			}
 			setTimeout(function() {
@@ -45,7 +45,11 @@ var completeTask = function(i) {
 						completeTask(i + 1);
 					}, taskCompleteDelay);
 				} else {
-					poll(droneTasks[i + 1]);
+					var t = droneTasks[i + 1];
+					$('#td_' + t.taskNumber).html('Manual Override');
+					$('#tr_' + t.taskNumber).css('background-color', '#fcf8e3');
+					$('#tr_' + t.taskNumber).css('color', '#8a6d3b');
+					poll(t);
 				}
 			}, taskCompleteDelay);
 		}
