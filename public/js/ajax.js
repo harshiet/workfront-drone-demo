@@ -19,7 +19,7 @@ var getDroneTasks = function() {
 		success : function(tasks) {
 			droneTasks = tasks;
 			$.each(tasks, function(i, task) {
-				$('#tasks').append('<tr id="tr_' + task.taskNumber + '"><td>' + task.taskNumber + '</td><td>' + task.name + '</td><td id="td_' + task.taskNumber + '"></td></tr>');
+				$('#tasks').append('<tr id="tr_' + task.taskNumber + '"><td>' + task.taskNumber + '</td><td>' + task.name + '</td><td id="td_' + task.taskNumber + '" style="width:150px"></td></tr>');
 			})
 		}
 	});
@@ -34,9 +34,9 @@ var completeTask = function(i) {
 			$('#tr_' + droneTasks[i].taskNumber).css('color', '#3c763d');
 			$('#progress-bar').css('width', ((i * 100) / droneTasks.length) + '%');
 			$('#progress-bar').html(Math.round(((i * 100) / droneTasks.length), 0) + '%');
-			if (droneTasks[i].taskNumber != 0 && droneTasks[i].taskNumber % 5 == 0) {
+			if (droneTasks[i].taskNumber % 5 == 0) {
 				$('html, body').animate({
-					scrollTop : $('#tr_' + droneTasks[i].taskNumber).offset().top + 90
+					scrollTop : $('#tr_' + droneTasks[i].taskNumber).offset().top - 100
 				}, 2000);
 			}
 			setTimeout(function() {
