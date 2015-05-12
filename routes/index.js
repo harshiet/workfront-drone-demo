@@ -8,9 +8,17 @@ router.get('/', function(req, res, next) {
 		title : 'Express'
 	});
 });
-router.get('/start', function(req, res, next) {
-	attask.doProcess();
-	res.send('Hello World!');
+router.get('/login', function(req, res, next) {
+	attask.login(res);
+});
+router.get('/login', function(req, res, next) {
+	attask.login(res);
+});
+router.get('/login', function(req, res, next) {
+	attask.login(res);
+});
+router.get('/login', function(req, res, next) {
+	attask.login(res);
 });
 
 module.exports = router;
