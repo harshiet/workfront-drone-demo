@@ -11,14 +11,14 @@ router.get('/', function(req, res, next) {
 router.get('/login', function(req, res, next) {
 	attask.login(res);
 });
-router.get('/login', function(req, res, next) {
-	attask.login(res);
+router.get('/tasks', function(req, res, next) {
+	attask.tasks(req.query.sessionID, res);
 });
-router.get('/login', function(req, res, next) {
-	attask.login(res);
+router.get('/complete', function(req, res, next) {
+	attask.complete(req, res);
 });
-router.get('/login', function(req, res, next) {
-	attask.login(res);
+router.get('/poll', function(req, res, next) {
+	attask.poll(req, res);
 });
 
 module.exports = router;

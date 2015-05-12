@@ -12,7 +12,7 @@ var doProcess = function() {
 
 	var getDroneTasks = function() {
 		$.ajax({
-			url : '/tasks',
+			url : '/tasks?sessionID=' + sessionID,
 			success : function(tasks) {
 				setTimeout(function() {
 					completeTask(0, tasks);
