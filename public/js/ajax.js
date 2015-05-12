@@ -19,7 +19,7 @@ var getDroneTasks = function() {
 		success : function(tasks) {
 			droneTasks = tasks;
 			$.each(tasks, function(i, task) {
-				$('#tasks').append('<tr><td>' + task.taskNumber + '</td><td>' + task.name + '</td><td id="td_' + task.taskNumber + '"></td></tr>');
+				$('#tasks').append('<tr id="tr_' + task.taskNumber + '"><td>' + task.taskNumber + '</td><td>' + task.name + '</td><td id="td_' + task.taskNumber + '"></td></tr>');
 			})
 		}
 	});
@@ -30,6 +30,8 @@ var completeTask = function(i) {
 		url : '/complete?taskID=' + droneTasks[i].ID + '&sessionID=' + sessionID,
 		success : function(data) {
 			$('#td_' + droneTasks[i].taskNumber).html('Complete');
+			$('#tr_' + droneTasks[i].taskNumber).css('background-color','#dff0d8');
+			$('#tr_' + droneTasks[i].taskNumber).css('color','#3c763d');
 			$('#progress-bar').css('width', ((i * 100) / droneTasks.length) + '%');
 			$('#progress-bar').html(Math.round(((i * 100) / droneTasks.length), 0) + '%');
 			setTimeout(function() {
