@@ -21,18 +21,21 @@ module.exports = {
 		}).end();
 	},
 
-	predicateBy : function(prop) {
-		return function(a, b) {
-			if (a[prop] > b[prop]) {
-				return 1;
-			} else if (a[prop] < b[prop]) {
-				return -1;
+	tasks : function(sessionID, response) {
+		process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
+		var http = require('https');
+		var predicateBy = function(prop) {
+			return function(a, b) {
+				if (a[prop] > b[prop]) {
+					return 1;
+				} else if (a[prop] < b[prop]) {
+					return -1;
+				}
+				return 0;
 			}
-			return 0;
 		}
-	},
 
-	tasks : function(sessonID, response) {
+
 		var options = {
 			host : 'pharmaref1.attask-ondemand.com',
 			// port : 443,
@@ -49,7 +52,7 @@ module.exports = {
 			res.on('end', function() {
 				var json = JSON.parse(str);
 				var tasks = json.data[0].tasks;
-				tasks.sort(this.predicatBy('taskNumber'));
+				tasks.sort(predicateBy('taskNumber'));
 				response.send(tasks);
 			})
 		}).end();
