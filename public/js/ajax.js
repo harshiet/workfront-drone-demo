@@ -1,6 +1,6 @@
 var doProcess = function() {
 
-	var taskCompleteDelay = 1000;
+	var taskCompleteDelay = 100;
 	var sessionID = '';
 	$.ajax({
 		url : '/login',
@@ -23,10 +23,11 @@ var doProcess = function() {
 
 	var completeTask = function(i, tasks) {
 		$.ajax({
-			url : '/complete?id=' + tasks[i].ID,
-			success : function(tasks) {
+			url : '/complete?taskID=' + tasks[i].ID + '&sessionID=' + sessionID,
+			success : function(data) {
+				console.log(data);
 				setTimeout(function() {
-					if (i < tasks.length - 2) {
+					if (i < tasks.length - 84) {
 						setTimeout(function() {
 							completeTask(i + 1, tasks);
 						}, taskCompleteDelay);
@@ -40,9 +41,9 @@ var doProcess = function() {
 
 	var poll = function(task) {
 		$.ajax({
-			url : '/poll?id=' + task.ID,
-			success : function(tasks) {
-				if (json.data.status == 'CPL') {
+			url : '/poll?taskID=' + task.ID + '&sessionID=' + sessionID,
+			success : function(data) {
+				if (data == 'CPL') {
 					console.log('launch drone');
 				} else {
 					setTimeout(function() {

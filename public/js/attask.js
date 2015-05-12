@@ -35,7 +35,6 @@ module.exports = {
 			}
 		}
 
-
 		var options = {
 			host : 'pharmaref1.attask-ondemand.com',
 			// port : 443,
@@ -58,53 +57,35 @@ module.exports = {
 		}).end();
 	},
 
-	poll : function(task) {
-		console.log('Polling: ' + task.name);
+	poll : function(sessionID, taskID, response) {
+		process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
+		var http = require('https');
 		var options = {
 			host : 'pharmaref1.attask-ondemand.com',
-			// port : 443,
-			path : 'https://pharmaref1.attask-ondemand.com/attask/api/task/' + task.ID + '?fields=status,name&sessionID=' + sessionID,
+			path : 'https://pharmaref1.attask-ondemand.com/attask/api/task/' + taskID + '?fields=status,name&sessionID=' + sessionID,
 			method : 'GET'
 		};
 		http.request(options, function(res) {
 			res.setEncoding('utf8');
 			res.on('data', function(chunk) {
-				var json = JSON.parse(chunk);
-				if (json.data.status == 'CPL') {
-					console.log('launch drone');
-				} else {
-					setTimeout(function() {
-						poll(task);
-					}, taskCompleteDelay);
-				}
+				response.send(JSON.parse(chunk).data.status);
 			});
 		}).end();
 
 	},
-	completeTask : function(i, tasks) {
-		// console.log(i + ',' + tasks.length + ',' + tasks[i].taskNumber +
-		// ',' + tasks[i].name);
-		console.log('Completing: [' + tasks[i].taskNumber + '] ' + tasks[i].name);
+	complete : function(sessionID, taskID, response) {
+		process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
+		var http = require('https');
 		var options = {
 			host : 'pharmaref1.attask-ondemand.com',
-			path : 'https://pharmaref1.attask-ondemand.com/attask/api/task/' + tasks[i].ID + '?fields=name,status&updates={status:"CPL"}&sessionID=' + sessionID,
+			path : 'https://pharmaref1.attask-ondemand.com/attask/api/task/' + taskID + '?fields=name,status&updates={status:"CPL"}&sessionID=' + sessionID,
 			method : 'PUT'
 		};
 
 		http.request(options, function(res) {
 			res.setEncoding('utf8');
 			res.on('data', function(chunk) {
-				// var json = JSON.parse(chunk);
-				// console.log(chunk);
-			});
-			res.on('end', function() {
-				if (i < tasks.length - 2) {
-					setTimeout(function() {
-						completeTask(i + 1, tasks);
-					}, taskCompleteDelay);
-				} else {
-					poll(tasks[i + 1]);
-				}
+				response.send(JSON.parse(chunk).data.status);
 			});
 		}).end();
 

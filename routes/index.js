@@ -15,10 +15,10 @@ router.get('/tasks', function(req, res, next) {
 	attask.tasks(req.query.sessionID, res);
 });
 router.get('/complete', function(req, res, next) {
-	attask.complete(req, res);
+	attask.complete(req.query.sessionID, req.query.taskID, res);
 });
 router.get('/poll', function(req, res, next) {
-	attask.poll(req, res);
+	attask.poll(req.query.sessionID, req.query.taskID, res);
 });
 
 module.exports = router;

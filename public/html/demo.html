@@ -10,16 +10,7 @@
 <script type="text/javascript" src="/js/ajax.js"></script>
 <script>
 	$(function() {
-		$.ajax({
-			type : 'GET',
-			url : "/login",
-			dataType : "html",
-			// Work with the response
-			success : function(response) {
-				console.log(response); // server response
-			}
-		});
-
+		doProcess();
 	})
 </script>
 
