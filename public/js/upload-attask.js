@@ -27,13 +27,13 @@ module.exports = {
 				if (err) {
 					console.log(err);
 				} else {
-					console.log('URL: ' + body);
+//					console.log('URL: ' + body);
 					var json = JSON.parse(body);
 					uploadFile(json.data.handle);
 				}
 			});
 			var form = req.form();
-			form.append('uploadedFile', fs.createReadStream('../../' + filename));
+			form.append('uploadedFile', fs.createReadStream(filename));
 		}
 
 		var uploadFile = function(handle) {
@@ -55,7 +55,7 @@ module.exports = {
 			http.request(options, function(res) {
 				res.setEncoding('utf8');
 				res.on('data', function(chunk) {
-					console.log(chunk);
+					//console.log(chunk);
 				});
 			}).end();
 
