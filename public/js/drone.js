@@ -20,6 +20,7 @@ module.exports = {
 			'ip' : '192.168.1.12'
 		});
 		var fs = require('fs'), df = require('dateformat');
+		var upload = require('upload-attask');
 
 		var rotateAndTakePicture = function(index) {
 			client.stop();
@@ -37,6 +38,7 @@ module.exports = {
 								console.log(err);
 							} else {
 								console.log(fileName + ' Saved');
+								upload.uploadFile(filename);
 							}
 						});
 						if (index == 4) {
