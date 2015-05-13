@@ -62,19 +62,12 @@ var completeTask = function(i) {
 	});
 };
 
-var countdown = function(i) {
+var countdown = function(i, task) {
 	if (i >= 0) {
 		setTimeout(function() {
 			$('#countdown').html(i);
-			countdown(i - 1);
+			countdown(i - 1, task);
 		}, 1000);
-	} else {
-		$.ajax({
-			url : '/launch?taskID=' + task.ID,
-			async : false,
-			success : function(data) {
-			}
-		});
 	}
 };
 
@@ -86,7 +79,13 @@ var poll = function(task) {
 				progress(task, droneTasks.length - 1);
 				$('#myModal').modal('show')
 				$('#countdown').html(5);
-				countdown(4);
+				countdown(4, task);
+				$.ajax({
+					url : '/launch?taskID=' + task.ID,
+					async : true,
+					success : function(data) {
+					}
+				});
 			} else {
 				setTimeout(function() {
 					poll(task);

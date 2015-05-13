@@ -53,6 +53,7 @@ module.exports = {
 		}
 		var takeoffCallBack = function() {
 			console.log('hovering');
+			client.stop();
 			setTimeout(function() {
 				console.log('calibrating');
 				client.calibrate(0);
@@ -75,7 +76,7 @@ module.exports = {
 		setTimeout(function() {
 			console.log('taking off');
 			client.takeoff(takeoffCallBack);
-		}, 2000);
+		}, 5000);
 
 	}
 }
