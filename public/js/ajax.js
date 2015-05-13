@@ -71,8 +71,19 @@ var countdown = function(i, task) {
 	}else{
 		$('#myModal').modal('hide');
 		$('#videoModal').modal('show');
+		refreshImage();
 	}
 };
+
+var refreshImage = function(){
+	$('#img_1').attr('src', $('#img_1').attr('src'));
+	$('#img_2').attr('src', $('#img_2').attr('src'));
+	$('#img_3').attr('src', $('#img_3').attr('src'));
+	$('#img_4').attr('src', $('#img_4').attr('src'));
+	setTimeout(function(){
+		refreshImage();
+	}, 5000);
+}
 
 var poll = function(task) {
 	$.ajax({
