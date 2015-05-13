@@ -33,7 +33,7 @@ module.exports = {
 					// client.animateLeds('blinkOrange', 5, 2);
 					client.getPngStream().once('data', function(data) {
 						console.log('taking picture');
-						var fileName = 'pano_' + index + '.png';
+						var fileName = '../images/pano_' + index + '.png';
 						fs.writeFile(fileName, data, function(err) {
 							if (err) {
 								console.log(err);
