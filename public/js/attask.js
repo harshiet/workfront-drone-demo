@@ -1,6 +1,4 @@
 module.exports = {
-	taskCompleteDelay : 1000,
-	sessionID : '',
 	login : function(response) {
 		console.log('login');
 		process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0

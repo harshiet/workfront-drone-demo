@@ -1,11 +1,22 @@
 module.exports = {
 
-	launch : function() {
-		console.log('inside launch');
+	land : function() {
+		console.log('landing');
 		var arDrone = require('ar-drone');
-		var client = arDrone.createClient({'ip': '192.168.1.12'});
-		console.log('inside launch1');
+		var client = arDrone.createClient({
+			'ip' : '192.168.1.12'
+		});
+		client.land(function() {
+			console.log('landed');
+		});
+	},
+	launch : function() {
+		var arDrone = require('ar-drone');
+		var client = arDrone.createClient({
+			'ip' : '192.168.1.12'
+		});
 		var fs = require('fs'), df = require('dateformat');
+
 		var rotateAndTakePicture = function(index) {
 			client.stop();
 			client.clockwise(.75);
@@ -25,10 +36,6 @@ module.exports = {
 							}
 						});
 						if (index == 4) {
-							client.land(function() {
-								console.log('landing');
-								process.exit(0);
-							})
 						} else {
 							rotateAndTakePicture(index + 1);
 						}
@@ -38,17 +45,27 @@ module.exports = {
 		}
 		var takeoffCallBack = function() {
 			console.log('hovering');
-			// console.log('calibrating');
-			// client.calibrate(0);
-			// console.log('calibration done');
+			console.log('calibrating');
+			client.calibrate(0);
+			console.log('calibration done');
 			client.stop();
+			// setTimeout(function() {
+			// rotateAndTakePicture(1);
+			// }, 500);
+
 			setTimeout(function() {
-				rotateAndTakePicture(1);
-			}, 500);
+				land();
+			}, 5000);
 		}
 
-		client.ftrim()
-		console.log('inside launch2');
+		var land = function() {
+			client.land(function() {
+				console.log('landed');
+			});
+
+		};
+
+		client.ftrim();
 
 		setTimeout(function() {
 			console.log('taking off');

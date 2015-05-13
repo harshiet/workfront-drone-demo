@@ -24,5 +24,8 @@ router.get('/poll', function(req, res, next) {
 router.get('/launch', function(req, res, next) {
 	drone.launch();
 });
+router.get('/stop', function(req, res, next) {
+	drone.land();
+});
 
 module.exports = router;
