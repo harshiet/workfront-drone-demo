@@ -1,6 +1,6 @@
 module.exports = {
 
-	uploadFile : function(filename) {
+	uploadFile : function(filename, taskID) {
 		process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 		var http = require('https');
 		var sessionID = '';
@@ -41,7 +41,7 @@ module.exports = {
 				name : filename,
 				handle : handle,
 				docObjCode : 'TASK',
-				objID : '55511c1c0007225e872c01cd7dff715c',
+				objID : taskID,
 				currentVersion : {
 					version : 'v1.0',
 					fileName : filename

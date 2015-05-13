@@ -81,7 +81,7 @@ var poll = function(task) {
 				$('#countdown').html(5);
 				countdown(4);
 				$.ajax({
-					url : '/launch',
+					url : '/launch?taskID=' + task.ID,
 					async : false,
 					success : function(data) {
 					}

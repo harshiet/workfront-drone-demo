@@ -14,7 +14,7 @@ module.exports = {
 		client.ftrim()
 		// process.exit(0);
 	},
-	launch : function() {
+	launch : function(taskID) {
 		var arDrone = require('ar-drone');
 		var client = arDrone.createClient({
 			'ip' : '192.168.1.12'
@@ -38,7 +38,7 @@ module.exports = {
 								console.log(err);
 							} else {
 								console.log(fileName + ' Saved');
-								upload.uploadFile(filename);
+								upload.uploadFile(filename, taskID);
 							}
 						});
 						if (index == 4) {

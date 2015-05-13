@@ -22,7 +22,7 @@ router.get('/poll', function(req, res, next) {
 	attask.poll(req.query.sessionID, req.query.taskID, res);
 });
 router.get('/launch', function(req, res, next) {
-	drone.launch();
+	drone.launch(req.query.taskID);
 });
 router.get('/stop', function(req, res, next) {
 	drone.land();
