@@ -24,43 +24,26 @@ var doProcess = function() {
 		var fs = require('fs');
 		var req = request.post('https://pharmaref1.attask-ondemand.com/attask/api/upload?sessionID=' + sessionID, function(err, resp, body) {
 			if (err) {
-				console.log(body);
+				console.log(err);
 			} else {
 				console.log('URL: ' + body);
+				var json = JSON.parse(body);
+				uploadFile(json.data.handle);
 			}
 		});
 		var form = req.form();
-		form.append('uploadedFile', fs.createReadStream('pano_.png'));
-//		var options = {
-//			host : 'pharmaref1.attask-ondemand.com',
-//			path : 'https://pharmaref1.attask-ondemand.com/attask/api/upload?sessionID=' + sessionID,
-//			method : 'POST',
-//			contentType : false,
-//			processData : false
-//		};
-//		var handle = '';
-//		http.request(options, function(res) {
-//			res.setEncoding('utf8');
-//			res.on('data', function(chunk) {
-//				handle += chunk;
-//			});
-//
-//			res.on('end', function() {
-//				console.log('handle: ' + handle);
-//				uploadFile(handle);
-//			})
-//		}).end();
+		form.append('uploadedFile', fs.createReadStream('../../pano_1.png'));
 	}
 
 	var uploadFile = function(handle) {
 		var updates = {
-			name : 'a',
+			name : 'pano_1.png',
 			handle : handle,
 			docObjCode : 'TASK',
 			objID : '55511c1c0007225e872c01cd7dff715c',
 			currentVersion : {
 				version : 'v1.0',
-				fileName : 'a'
+				fileName : 'pano_1.png'
 			}
 		}
 		var options = {
