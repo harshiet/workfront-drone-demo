@@ -6,9 +6,13 @@ module.exports = {
 		var client = arDrone.createClient({
 			'ip' : '192.168.1.12'
 		});
+		client.ftrim()
+		client.stop();
 		client.land(function() {
 			console.log('landed');
 		});
+		client.ftrim()
+		// process.exit(0);
 	},
 	launch : function() {
 		var arDrone = require('ar-drone');
@@ -45,20 +49,23 @@ module.exports = {
 		}
 		var takeoffCallBack = function() {
 			console.log('hovering');
-			console.log('calibrating');
-			client.calibrate(0);
-			console.log('calibration done');
-			client.stop();
+			setTimeout(function() {
+				console.log('calibrating');
+				client.calibrate(0);
+				console.log('calibration done');
+			}, 10000);
 			// setTimeout(function() {
 			// rotateAndTakePicture(1);
 			// }, 500);
 
 			setTimeout(function() {
 				land();
-			}, 5000);
+			}, 15000);
 		}
 
 		var land = function() {
+			console.log('landing');
+
 			client.land(function() {
 				console.log('landed');
 			});
@@ -69,8 +76,8 @@ module.exports = {
 
 		setTimeout(function() {
 			console.log('taking off');
+			client.calibrate(0);
 			client.takeoff(takeoffCallBack);
-			takeoffCallBack();
 		}, 2000);
 
 	}
