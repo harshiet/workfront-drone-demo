@@ -68,6 +68,9 @@ var countdown = function(i, task) {
 			$('#countdown').html(i);
 			countdown(i - 1, task);
 		}, 1000);
+	}else{
+		$('#myModal').modal('hide');
+		$('#videoModal').modal('show');
 	}
 };
 
@@ -80,12 +83,12 @@ var poll = function(task) {
 				$('#myModal').modal('show')
 				$('#countdown').html(5);
 				countdown(4, task);
-				$.ajax({
+				/*$.ajax({
 					url : '/launch?taskID=' + task.ID,
 					async : true,
 					success : function(data) {
 					}
-				});
+				});*/
 			} else {
 				setTimeout(function() {
 					poll(task);
