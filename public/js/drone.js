@@ -72,8 +72,8 @@ module.exports = {
 		client.ftrim();
 		setTimeout(function() {
 			console.log('taking off');
-			takeoffCallBack();
-			// client.takeoff(takeoffCallBack);
+			//takeoffCallBack();
+			 client.takeoff(takeoffCallBack);
 		}, 5000);
 	},
 	video : function(droneip) {
