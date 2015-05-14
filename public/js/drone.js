@@ -14,22 +14,30 @@ module.exports = {
 		client.ftrim()
 		// process.exit(0);
 	},
-	launch : function(taskID, droneip) {
+	launch : function(taskID, droneip, mystream) {
 		console.log(taskID);
 		var arDrone = require('ar-drone');
 		var client = arDrone.createClient({
 			'ip' : droneip
 		});
+		var pngStream = client.getPngStream();
+
+		pngStream.on('error', console.log).on('data', function(pngBuffer) {
+			mystream.png = pngBuffer;
+		});
 		var fs = require('fs'), df = require('dateformat');
 		var upload = require('./upload-attask');
 
 		var rotateAndTakePicture = function(index) {
-			client.stop();
-			// client.clockwise(.75);
-			// client.back(.5);
+//			if (index % 2 == 0) {
+//				client.clockwise(.1);
+//			} else {
+//				client.clockwise(.1);
+//			}
 			setTimeout(function() {
-				// client.animateLeds('blinkOrange', 5, 2);
-				client.getPngStream().once('data', function(data) {
+				client.stop();
+				client.animateLeds('blinkOrange', 5, 2);
+				pngStream.once('data', function(data) {
 					console.log('taking picture');
 					var fileName = 'public/images/pano_' + index + '.png';
 					fs.writeFile(fileName, data, function(err) {
@@ -55,9 +63,11 @@ module.exports = {
 				console.log('calibrating');
 				client.calibrate(0);
 				console.log('calibration done');
+				client.stop();
 				setTimeout(function() {
 					rotateAndTakePicture(1);
-				}, 1000);
+				}, 2000)
+
 			}, 2000);
 		}
 
@@ -72,20 +82,15 @@ module.exports = {
 		client.ftrim();
 		setTimeout(function() {
 			console.log('taking off');
-			//takeoffCallBack();
-			 client.takeoff(takeoffCallBack);
+			// takeoffCallBack();
+			client.takeoff(takeoffCallBack);
 		}, 5000);
 	},
-	video : function(droneip) {
-		var http = require("http");
-		var drone = require("../../node_modules/dronestream/index");
-		var server = http.createServer(function(req, res) {
-			require("fs").createReadStream(__dirname + "/video.html").pipe(res);
+	video : function(mystream, res) {
+		res.writeHead(200, {
+			'Content-Type' : 'image/png'
 		});
-		drone.listen(server, {
-			'ip' : droneip
-		});
-		server.listen(5555);
+		res.end(mystream.png);
 	}
 }
 

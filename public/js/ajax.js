@@ -51,7 +51,7 @@ var completeTask = function(i) {
 				}, 2000);
 			}
 			setTimeout(function() {
-				if (i < droneTasks.length - 84) {
+				if (i < droneTasks.length - 2) {
 					setTimeout(function() {
 						completeTask(i + 1);
 					}, taskCompleteDelay);
@@ -74,7 +74,6 @@ var countdown = function(i, task) {
 			countdown(i - 1, task);
 		}, 1000);
 	} else {
-		$('#videofrm').attr('src', $('#videofrm').attr('src'));
 		$('#myModal').modal('hide');
 		$('#videoModal').modal('show');
 		img1 = $('#img_1').attr('src');
@@ -82,8 +81,16 @@ var countdown = function(i, task) {
 		img3 = $('#img_3').attr('src');
 		img4 = $('#img_4').attr('src');
 		refreshImage();
+		refreshVideo();
 	}
 };
+
+var refreshVideo = function() {
+	$('#videofrm').attr('src', $('#videofrm').attr('src'));
+	setTimeout(function() {
+		refreshVideo();
+	}, 100);
+}
 
 var refreshImage = function() {
 	var d = (new Date()).getTime();
@@ -94,7 +101,7 @@ var refreshImage = function() {
 
 	setTimeout(function() {
 		refreshImage();
-	}, 5000);
+	}, 2000);
 }
 
 var poll = function(task) {
