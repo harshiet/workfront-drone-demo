@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var attask = require('../public/js/attask');
 var drone = require('../public/js/drone');
+var droneip = '192.168.1.12';
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -22,10 +24,13 @@ router.get('/poll', function(req, res, next) {
 	attask.poll(req.query.sessionID, req.query.taskID, res);
 });
 router.get('/launch', function(req, res, next) {
-	drone.launch(req.query.taskID);
+	drone.launch(req.query.taskID, droneip);
 });
 router.get('/stop', function(req, res, next) {
 	drone.land();
+});
+router.get('/video', function(req, res, next) {
+	drone.video(droneip);
 });
 
 module.exports = router;

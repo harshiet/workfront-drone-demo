@@ -14,11 +14,11 @@ module.exports = {
 		client.ftrim()
 		// process.exit(0);
 	},
-	launch : function(taskID) {
+	launch : function(taskID, droneip) {
 		console.log(taskID);
 		var arDrone = require('ar-drone');
 		var client = arDrone.createClient({
-			'ip' : '192.168.1.12'
+			'ip' : droneip
 		});
 		var fs = require('fs'), df = require('dateformat');
 		var upload = require('./upload-attask');
@@ -33,7 +33,7 @@ module.exports = {
 					// client.animateLeds('blinkOrange', 5, 2);
 					client.getPngStream().once('data', function(data) {
 						console.log('taking picture');
-						var fileName = '../images/pano_' + index + '.png';
+						var fileName = 'public/images/pano_' + index + '.png';
 						fs.writeFile(fileName, data, function(err) {
 							if (err) {
 								console.log(err);
@@ -75,9 +75,20 @@ module.exports = {
 		client.ftrim();
 		setTimeout(function() {
 			console.log('taking off');
-			client.takeoff(takeoffCallBack);
+			takeoffCallBack();
+			// client.takeoff(takeoffCallBack);
 		}, 5000);
-
+	},
+	video : function(droneip) {
+		var http = require("http");
+		var drone = require("../../node_modules/dronestream/index");
+		var server = http.createServer(function(req, res) {
+			require("fs").createReadStream(__dirname + "/video.html").pipe(res);
+		});
+		drone.listen(server, {
+			'ip' : droneip
+		});
+		server.listen(5555);
 	}
 }
 

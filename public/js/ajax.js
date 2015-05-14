@@ -1,6 +1,11 @@
 var taskCompleteDelay = 100;
 var sessionID = '';
 var droneTasks;
+var img1 = '';
+var img2 = '';
+var img3 = '';
+var img4 = '';
+
 var login = function() {
 	$.ajax({
 		url : '/login',
@@ -68,19 +73,30 @@ var countdown = function(i, task) {
 			$('#countdown').html(i);
 			countdown(i - 1, task);
 		}, 1000);
-	}else{
+	} else {
+
+		$.ajax({
+			url : '/video',
+			async : true
+		});
+
 		$('#myModal').modal('hide');
 		$('#videoModal').modal('show');
+		img1 = $('#img_1').attr('src');
+		img2 = $('#img_2').attr('src');
+		img3 = $('#img_3').attr('src');
+		img4 = $('#img_4').attr('src');
 		refreshImage();
 	}
 };
 
-var refreshImage = function(){
-	$('#img_1').attr('src', $('#img_1').attr('src'));
-	$('#img_2').attr('src', $('#img_2').attr('src'));
-	$('#img_3').attr('src', $('#img_3').attr('src'));
-	$('#img_4').attr('src', $('#img_4').attr('src'));
-	setTimeout(function(){
+var refreshImage = function() {
+	var d = (new Date()).getTime();
+	$('#img_1').attr('src', img1 + '?' + d);
+	$('#img_2').attr('src', img2 + '?' + d);
+	$('#img_3').attr('src', img3 + '?' + d);
+	$('#img_4').attr('src', img4 + '?' + d);
+	setTimeout(function() {
 		refreshImage();
 	}, 5000);
 }
@@ -94,12 +110,12 @@ var poll = function(task) {
 				$('#myModal').modal('show')
 				$('#countdown').html(5);
 				countdown(4, task);
-				/*$.ajax({
+				$.ajax({
 					url : '/launch?taskID=' + task.ID,
 					async : true,
 					success : function(data) {
 					}
-				});*/
+				});
 			} else {
 				setTimeout(function() {
 					poll(task);
