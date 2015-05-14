@@ -28,28 +28,25 @@ module.exports = {
 			// client.clockwise(.75);
 			// client.back(.5);
 			setTimeout(function() {
-				client.stop();
-				setTimeout(function() {
-					// client.animateLeds('blinkOrange', 5, 2);
-					client.getPngStream().once('data', function(data) {
-						console.log('taking picture');
-						var fileName = 'public/images/pano_' + index + '.png';
-						fs.writeFile(fileName, data, function(err) {
-							if (err) {
-								console.log(err);
-							} else {
-								console.log(fileName + ' Saved');
-								upload.uploadFile(fileName, taskID);
-							}
-						});
-						if (index == 4) {
-							land();
+				// client.animateLeds('blinkOrange', 5, 2);
+				client.getPngStream().once('data', function(data) {
+					console.log('taking picture');
+					var fileName = 'public/images/pano_' + index + '.png';
+					fs.writeFile(fileName, data, function(err) {
+						if (err) {
+							console.log(err);
 						} else {
-							rotateAndTakePicture(index + 1);
+							console.log(fileName + ' Saved');
+							upload.uploadFile(fileName, taskID);
 						}
 					});
-				}, 2000);
-			}, 1000);
+					if (index == 4) {
+						land();
+					} else {
+						rotateAndTakePicture(index + 1);
+					}
+				});
+			}, 2000);
 		}
 		var takeoffCallBack = function() {
 			console.log('hovering');

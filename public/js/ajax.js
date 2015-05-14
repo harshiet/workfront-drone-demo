@@ -74,7 +74,6 @@ var countdown = function(i, task) {
 			countdown(i - 1, task);
 		}, 1000);
 	} else {
-
 		$.ajax({
 			url : '/video',
 			async : true
@@ -96,6 +95,7 @@ var refreshImage = function() {
 	$('#img_2').attr('src', img2 + '?' + d);
 	$('#img_3').attr('src', img3 + '?' + d);
 	$('#img_4').attr('src', img4 + '?' + d);
+
 	setTimeout(function() {
 		refreshImage();
 	}, 5000);
