@@ -74,11 +74,7 @@ var countdown = function(i, task) {
 			countdown(i - 1, task);
 		}, 1000);
 	} else {
-		$.ajax({
-			url : '/video',
-			async : true
-		});
-
+		$('#videofrm').attr('src', $('#videofrm').attr('src'));
 		$('#myModal').modal('hide');
 		$('#videoModal').modal('show');
 		img1 = $('#img_1').attr('src');
@@ -116,6 +112,11 @@ var poll = function(task) {
 					success : function(data) {
 					}
 				});
+				$.ajax({
+					url : '/video',
+					async : true
+				});
+
 			} else {
 				setTimeout(function() {
 					poll(task);
